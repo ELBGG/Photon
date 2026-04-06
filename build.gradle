@@ -46,7 +46,7 @@ dependencies {
     
     modImplementation files('libs/LDLib2-2.4.jar')
 
-    modCompileOnly "maven.modrinth:simple-aa:${project.simpleaa_version}"
+    modCompileOnly "maven.modrinth:special-model-loader:${project.special_model_version}"
 
     implementation 'de.javagl:obj:0.4.0'
 
