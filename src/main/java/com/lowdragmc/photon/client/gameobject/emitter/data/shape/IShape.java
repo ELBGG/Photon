@@ -30,6 +30,9 @@ import java.util.function.Supplier;
  * @author KilaBash
  * @date 2023/5/26
  * @implNote IShape
+ * @port ELB_GG 
+ * @date_port 2026/03/29 
+ * @port_to fabric
  */
 public interface IShape extends IConfigurable, IPersistedSerializable, ILDLRegisterClient<IShape, Supplier<IShape>> {
     Codec<IShape> CODEC = PhotonRegistries.SHAPES.optionalCodec().dispatch(ILDLRegisterClient::getRegistryHolderOptional,

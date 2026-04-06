@@ -35,6 +35,9 @@ import static org.lwjgl.opengl.GL30.glBindVertexArray;
  * @author KilaBash
  * @date 2023/6/11
  * @implNote ParticleConfig
+ * @port ELB_GG 
+ * @date_port 2026/03/29 
+ * @port_to fabric
  */
 public class ParticleConfig implements IConfigurable, IPersistedSerializable {
     @Setter

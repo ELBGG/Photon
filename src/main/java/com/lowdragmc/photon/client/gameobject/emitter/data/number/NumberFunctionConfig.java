@@ -12,6 +12,9 @@ import java.lang.annotation.Target;
  * @author KilaBash
  * @date 2023/5/27
  * @implNote NumberFunctionConfig
+ * @port ELB_GG 
+ * @date_port 2026/03/29 
+ * @port_to fabric
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD})

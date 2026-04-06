@@ -30,8 +30,8 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.world.inventory.InventoryMenu;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix4f;
@@ -44,7 +44,7 @@ import java.lang.ref.Cleaner;
 import java.util.List;
 import java.util.Optional;
 
-@OnlyIn(Dist.CLIENT)
+@Environment(EnvType.CLIENT)
 @ParametersAreNonnullByDefault
 @LDLRegisterClient(name = "custom_shader", registry = "photon:material")
 public class CustomShaderMaterial extends ShaderInstanceMaterial {
@@ -164,6 +164,12 @@ public class CustomShaderMaterial extends ShaderInstanceMaterial {
         if (samplerNames.contains("SamplerSceneDepth")) {
             shaderHolder.addDynamicSampler("SamplerSceneDepth", () -> Optional.ofNullable(RenderPassPipeline.getCurrent())
                     .map(pipeline -> pipeline.getSceneSampler().getDepthTextureId()).orElse(-1));
+        }
+        if (samplerNames.contains("Sampler2")) {
+            shaderHolder.addDynamicSampler("Sampler2", () -> InventoryMenu.BLOCK_ATLAS);
+        }
+        if (samplerNames.contains("IceTexture")) {
+            shaderHolder.addDynamicSampler("IceTexture", () -> LDLib2.id("textures/ice_texture.png"));
         }
     }
 

@@ -13,6 +13,9 @@ import java.util.Objects;
  * @author KilaBash
  * @date 2023/5/27
  * @implNote Color
+ * @port ELB_GG 
+ * @date_port 2026/03/29 
+ * @port_to fabric
  */
 @LDLRegisterClient(name = "color", registry = "photon:number_function")
 public class Color extends Constant {

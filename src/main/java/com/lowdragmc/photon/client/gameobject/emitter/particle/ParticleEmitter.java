@@ -30,6 +30,9 @@ import java.util.*;
  * @author KilaBash
  * @date 2023/5/25
  * @implNote ParticleEmitter
+ * @port ELB_GG 
+ * @date_port 2026/03/29 
+ * @port_to fabric
  */
 @ParametersAreNonnullByDefault
 @LDLRegisterClient(name = "particle_emitter", registry = "photon:fx_object")

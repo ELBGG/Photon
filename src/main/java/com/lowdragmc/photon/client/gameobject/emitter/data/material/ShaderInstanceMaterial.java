@@ -9,8 +9,8 @@ import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.core.HolderLookup;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.nbt.CompoundTag;
@@ -21,8 +21,11 @@ import javax.annotation.ParametersAreNonnullByDefault;
  * @author KilaBash
  * @date 2023/6/1
  * @implNote ShaderInstanceMaterial
+ * @port ELB_GG 
+ * @date_port 2026/03/29 
+ * @port_to fabric
  */
-@OnlyIn(Dist.CLIENT)
+@Environment(EnvType.CLIENT)
 @ParametersAreNonnullByDefault
 public abstract class ShaderInstanceMaterial implements IMaterial {
 

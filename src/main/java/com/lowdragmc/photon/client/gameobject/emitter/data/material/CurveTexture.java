@@ -15,7 +15,7 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.util.FastColor;
 import net.minecraft.util.Mth;
-import net.neoforged.neoforge.common.util.INBTSerializable;
+
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -23,8 +23,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
+import com.lowdragmc.lowdraglib2.utils.INBTSerializable;
 
-public class CurveTexture implements AutoCloseable, IConfigurable, INBTSerializable<ListTag> {
+public class CurveTexture implements AutoCloseable, IConfigurable, INBTSerializable<Tag> {
     private final int width;
     private final int height;
     @Configurable(name = "curves", canCollapse = false, collapse = false)
@@ -113,21 +114,34 @@ public class CurveTexture implements AutoCloseable, IConfigurable, INBTSerializa
     }
 
     @Override
-    public ListTag serializeNBT(@Nonnull HolderLookup.Provider provider) {
+    public Tag serializeNBT(@Nonnull HolderLookup.Provider provider) {
+        var tag = new CompoundTag();
         var listTag = new ListTag();
         for (var curve : curves) {
             listTag.add(curve.serializeNBT(provider));
         }
-        return listTag;
+        tag.put("curves", listTag);
+        return tag;
     }
 
     @Override
-    public void deserializeNBT(@Nonnull HolderLookup.Provider provider, @Nonnull ListTag listTag) {
+    public void deserializeNBT(@Nonnull HolderLookup.Provider provider, @Nonnull Tag tag) {
         curves.clear();
-        for (Tag tag : listTag) {
-            var curve = new Curve();
-            curve.deserializeNBT(provider, (CompoundTag) tag);
-            curves.add(curve);
+        if (tag instanceof CompoundTag compound && compound.contains("curves", net.minecraft.nbt.Tag.TAG_LIST)) {
+            var listTag = compound.getList("curves", net.minecraft.nbt.Tag.TAG_COMPOUND);
+            for (Tag t : listTag) {
+                var curve = new Curve();
+                curve.deserializeNBT(provider, (CompoundTag) t);
+                curves.add(curve);
+            }
+        } else if (tag instanceof ListTag listTag) {
+            for (Tag t : listTag) {
+                if (t instanceof CompoundTag compound) {
+                    var curve = new Curve();
+                    curve.deserializeNBT(provider, compound);
+                    curves.add(curve);
+                }
+            }
         }
         markAsDirty();
     }

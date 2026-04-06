@@ -9,15 +9,15 @@ import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.ParticleRenderType;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.Camera;
 
 import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.function.Predicate;
 
-@OnlyIn(Dist.CLIENT)
+@Environment(EnvType.CLIENT)
 public class PhotonParticleManager extends ParticleManager {
     public final SceneView sceneView;
     // runtime

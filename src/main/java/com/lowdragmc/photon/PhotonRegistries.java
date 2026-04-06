@@ -8,23 +8,23 @@ import com.lowdragmc.photon.client.gameobject.emitter.data.material.BlockTexture
 import com.lowdragmc.photon.client.gameobject.emitter.data.material.IMaterial;
 import com.lowdragmc.photon.client.gameobject.emitter.data.number.NumberFunction;
 import com.lowdragmc.photon.client.gameobject.emitter.data.shape.IShape;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 
 import java.util.function.Supplier;
 
 public class PhotonRegistries {
 
-    @OnlyIn(Dist.CLIENT)
+    @Environment(EnvType.CLIENT)
     public static AutoRegistry.LDLibRegisterClient<IFXObject, Supplier<IFXObject>> FX_OBJECTS;
 
-    @OnlyIn(Dist.CLIENT)
+    @Environment(EnvType.CLIENT)
     public static AutoRegistry.LDLibRegisterClient<IMaterial, Supplier<IMaterial>> MATERIALS;
 
-    @OnlyIn(Dist.CLIENT)
+    @Environment(EnvType.CLIENT)
     public static AutoRegistry.LDLibRegisterClient<NumberFunction, Supplier<NumberFunction>> NUMBER_FUNCTIONS;
 
-    @OnlyIn(Dist.CLIENT)
+    @Environment(EnvType.CLIENT)
     public static AutoRegistry.LDLibRegisterClient<IShape, Supplier<IShape>> SHAPES;
 
     static {
@@ -36,7 +36,7 @@ public class PhotonRegistries {
     public static void init() {
     }
 
-    @OnlyIn(Dist.CLIENT)
+    @Environment(EnvType.CLIENT)
     private static class Client {
         public static void load() {
             FX_OBJECTS = AutoRegistry.LDLibRegisterClient
@@ -55,6 +55,8 @@ public class PhotonRegistries {
                     BlockTextureSheetMaterial.class.getAnnotation(LDLRegisterClient.class),
                     BlockTextureSheetMaterial.class,
                     () -> BlockTextureSheetMaterial.INSTANCE));
+            LDLib2.LOGGER.info("Photon Editor Parity - Registered {} FX Objects, {} Materials, {} Number Functions, {} Shapes", 
+                    FX_OBJECTS.values().size(), MATERIALS.values().size(), NUMBER_FUNCTIONS.values().size(), SHAPES.values().size());
         }
     }
 }

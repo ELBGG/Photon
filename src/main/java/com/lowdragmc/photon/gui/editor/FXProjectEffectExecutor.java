@@ -4,16 +4,19 @@ import com.lowdragmc.photon.client.fx.IEffectExecutor;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.util.RandomSource;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.world.level.Level;
 
 /**
  * @author KilaBash
  * @date 2023/7/17
  * @implNote EditorEffect
+ * @port ELB_GG 
+ * @date_port 2026/03/29 
+ * @port_to fabric
  */
-@OnlyIn(Dist.CLIENT)
+@Environment(EnvType.CLIENT)
 public class FXProjectEffectExecutor implements IEffectExecutor {
     @Getter
     public final Level level;

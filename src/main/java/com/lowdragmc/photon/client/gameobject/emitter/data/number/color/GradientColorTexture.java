@@ -5,8 +5,8 @@ import com.lowdragmc.lowdraglib2.gui.texture.TransformTexture;
 import com.lowdragmc.lowdraglib2.math.GradientColor;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.GuiGraphics;
 import org.joml.Matrix4f;
 
@@ -22,7 +22,7 @@ public class GradientColorTexture extends TransformTexture {
     }
 
     @Override
-    @OnlyIn(Dist.CLIENT)
+    @Environment(EnvType.CLIENT)
     protected void drawInternal(GuiGraphics graphics, float mouseX, float mouseY, float x, float y, float width, float height, float partialTicks) {
         // render color bar
         var buffer = graphics.bufferSource().getBuffer(LDLibRenderTypes.guiOverlay());
@@ -31,7 +31,7 @@ public class GradientColorTexture extends TransformTexture {
         drawGradient(graphics.pose().last().pose(), buffer, x, y, width, height, gradientColor);
     }
 
-    @OnlyIn(Dist.CLIENT)
+    @Environment(EnvType.CLIENT)
     public static void drawGradient(Matrix4f mat, VertexConsumer buf,
                                     float x, float y, float width, float height, GradientColor gc) {
         final List<Float> keys = new ArrayList<>();

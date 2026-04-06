@@ -22,10 +22,10 @@ import net.minecraft.commands.arguments.ResourceLocationArgument;
 import net.minecraft.commands.arguments.coordinates.BlockPosArgument;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
-import net.neoforged.neoforge.network.PacketDistributor;
-import net.neoforged.neoforge.network.handling.IPayloadContext;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -67,7 +67,9 @@ public class RemoveBlockEffectCommand implements CustomPacketPayload {
         if (location) {
             command.setLocation(ResourceLocationArgument.getId(context, "location"));
         }
-        PacketDistributor.sendToPlayersTrackingChunk(context.getSource().getLevel(), new ChunkPos(command.pos), command);
+        for (var player : PlayerLookup.tracking(context.getSource().getLevel(), command.pos)) {
+            ServerPlayNetworking.send(player, command);
+        }
         return Command.SINGLE_SUCCESS;
     }
 
@@ -94,15 +96,15 @@ public class RemoveBlockEffectCommand implements CustomPacketPayload {
         return packet;
     }
 
-    public static void execute(RemoveBlockEffectCommand packet, IPayloadContext context) {
+    public static void execute(RemoveBlockEffectCommand packet) {
         if (LDLib2.isClient()) {
-            Client.execute(packet, context);
+            Client.execute(packet);
         }
     }
 
-    @OnlyIn(Dist.CLIENT)
+    @Environment(EnvType.CLIENT)
     private static class Client {
-        public static void execute(RemoveBlockEffectCommand packet, IPayloadContext context) {
+        public static void execute(RemoveBlockEffectCommand packet) {
             var effects = BlockEffectExecutor.CACHE.get(packet.pos);
             if (effects == null) return;
             var iter = effects.iterator();

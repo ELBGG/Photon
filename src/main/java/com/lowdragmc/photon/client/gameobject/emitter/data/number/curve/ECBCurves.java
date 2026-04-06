@@ -4,22 +4,27 @@ import com.lowdragmc.lowdraglib2.math.curve.ExplicitCubicBezierCurve2;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
-import net.neoforged.neoforge.common.util.INBTSerializable;
+
 import org.joml.Vector2f;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
+import com.lowdragmc.lowdraglib2.utils.INBTSerializable;
 
 /**
  * @author KilaBash
  * @date 2023/5/29
  * @implNote ECBCurves
+ * @port ELB_GG 
+ * @date_port 2026/03/29 
+ * @port_to fabric
  */
 @EqualsAndHashCode
-public class ECBCurves implements INBTSerializable<ListTag> {
+public class ECBCurves implements INBTSerializable<Tag> {
     @Getter
     private final List<ExplicitCubicBezierCurve2> segments = new ArrayList<>();
 
@@ -52,20 +57,33 @@ public class ECBCurves implements INBTSerializable<ListTag> {
     }
 
     @Override
-    public ListTag serializeNBT(@Nonnull HolderLookup.Provider provider) {
+    public Tag serializeNBT(@Nonnull HolderLookup.Provider provider) {
+        var tag = new CompoundTag();
         var list = new ListTag();
         for (var curve : segments) {
             list.add(curve.serializeNBT(provider));
         }
-        return list;
+        tag.put("segments", list);
+        return tag;
     }
 
     @Override
-    public void deserializeNBT(@Nonnull HolderLookup.Provider provider, ListTag list) {
+    public void deserializeNBT(@Nonnull HolderLookup.Provider provider, @Nonnull Tag tag) {
         segments.clear();
-        for (Tag tag : list) {
-            if (tag instanceof ListTag curve) {
-                segments.add(new ExplicitCubicBezierCurve2(curve));
+        if (tag instanceof ListTag listTag) {
+            for (Tag t : listTag) {
+                if (t instanceof ListTag curve) {
+                    segments.add(new ExplicitCubicBezierCurve2(curve));
+                }
+            }
+        } else if (tag instanceof CompoundTag compoundTag) {
+            if (compoundTag.contains("segments", net.minecraft.nbt.Tag.TAG_LIST)) {
+                var list = compoundTag.getList("segments", net.minecraft.nbt.Tag.TAG_LIST);
+                for (Tag t : list) {
+                    if (t instanceof ListTag curve) {
+                        segments.add(new ExplicitCubicBezierCurve2(curve));
+                    }
+                }
             }
         }
     }

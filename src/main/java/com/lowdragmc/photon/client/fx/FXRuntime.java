@@ -53,7 +53,7 @@ public class FXRuntime implements IScene {
 
     @Override
     public Collection<ISceneObject> getAllSceneObjects() {
-        return objects.values().stream().map(ISceneObject.class::cast).toList();
+        return objects.values().stream().map(o -> (ISceneObject) o).toList();
     }
 
     @Override

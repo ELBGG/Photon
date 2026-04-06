@@ -24,8 +24,8 @@ import net.minecraft.world.level.Level;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import java.util.function.Supplier;
 
 /**
@@ -134,11 +134,11 @@ public interface IFXObject extends ISceneObject, IPersistedSerializable, IConfig
     /**
      * emit to a given level.
      */
-    default void emmit(@Nonnull IEffectExecutor effect) {
+    default void emmit(@NotNull IEffectExecutor effect) {
         emmit(effect, null, null, null);
     }
 
-    default void emmit(@Nonnull IEffectExecutor effect, @Nullable Vector3f position, @Nullable Quaternionf rotation, @Nullable Vector3f scale) {
+    default void emmit(@NotNull IEffectExecutor effect, @Nullable Vector3f position, @Nullable Quaternionf rotation, @Nullable Vector3f scale) {
         setEffect(effect);
         reset();
         if (position != null) {

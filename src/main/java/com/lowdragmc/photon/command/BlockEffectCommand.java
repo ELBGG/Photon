@@ -23,10 +23,10 @@ import net.minecraft.commands.arguments.ResourceLocationArgument;
 import net.minecraft.commands.arguments.coordinates.BlockPosArgument;
 import net.minecraft.commands.arguments.coordinates.Vec3Argument;
 import net.minecraft.core.BlockPos;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
-import net.neoforged.neoforge.network.PacketDistributor;
-import net.neoforged.neoforge.network.handling.IPayloadContext;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 
 import javax.annotation.Nonnull;
 
@@ -34,6 +34,9 @@ import javax.annotation.Nonnull;
  * @author KilaBash
  * @date 2023/6/5
  * @implNote BlockEffectCommand
+ * @port ELB_GG
+ * @date_port 2026/03/29
+ * @port_to fabric
  */
 public class BlockEffectCommand extends EffectCommand {
     public static final ResourceLocation ID = Photon.id("block_effect_command");
@@ -116,7 +119,9 @@ public class BlockEffectCommand extends EffectCommand {
         if (checkState) {
             command.setCheckState(BoolArgumentType.getBool(context, "check state"));
         }
-        PacketDistributor.sendToPlayersTrackingChunk(context.getSource().getLevel(), new ChunkPos(command.pos), command);
+        for (var player : PlayerLookup.tracking(context.getSource().getLevel(), command.pos)) {
+            ServerPlayNetworking.send(player, command);
+        }
         return Command.SINGLE_SUCCESS;
     }
 
@@ -140,15 +145,15 @@ public class BlockEffectCommand extends EffectCommand {
         return packet;
     }
 
-    public static void execute(BlockEffectCommand packet, IPayloadContext context) {
+    public static void execute(BlockEffectCommand packet) {
         if (LDLib2.isClient()) {
-            Client.execute(packet, context);
+            Client.execute(packet);
         }
     }
 
-    @OnlyIn(Dist.CLIENT)
+    @Environment(EnvType.CLIENT)
     private static class Client {
-        public static void execute(BlockEffectCommand packet, IPayloadContext context) {
+        public static void execute(BlockEffectCommand packet) {
             var level = Minecraft.getInstance().level;
             if (level != null && level.isLoaded(packet.pos)) {
                 var fx = FXHelper.getFX(packet.location);

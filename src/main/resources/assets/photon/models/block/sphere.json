@@ -1,0 +1,6 @@
+{
+  "loader": "special-model-loader:obj",
+  "model": "photon:models/obj/sphere.obj",
+  "textures": {},
+  "flip_v": true
+}

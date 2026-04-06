@@ -17,6 +17,7 @@ import com.lowdragmc.lowdraglib2.gui.ui.event.UIEvents;
 import com.lowdragmc.lowdraglib2.gui.util.DrawerHelper;
 import com.lowdragmc.lowdraglib2.gui.util.TreeBuilder;
 import com.lowdragmc.lowdraglib2.math.Transform;
+import com.lowdragmc.lowdraglib2.syncdata.IPersistedSerializable;
 import com.lowdragmc.photon.PhotonRegistries;
 import com.lowdragmc.photon.client.fx.FXRuntime;
 import com.lowdragmc.photon.client.gameobject.IFXObject;
@@ -118,7 +119,7 @@ public class FXHierarchyView extends View {
                             if (fxEditor.inspectorView.inspector.getInspectedConfigurable() != fxObject) {
                                 fxEditor.inspectorView.inspect(fxObject);
                                 fxEditor.sceneView.sceneEditor.setTransformGizmoTarget(fxObject.transform(), () -> {
-                                    fxEditor.historyView.recordSerializableObject(Component.translatable("photon.transform"), fxObject.transform(), fxObject);
+                                    fxEditor.historyView.recordSerializableObject(Component.translatable("photon.transform"), (IPersistedSerializable) fxObject.transform(), fxObject);
                                 });
                             }
                         } else {

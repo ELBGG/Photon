@@ -24,6 +24,9 @@ import java.util.*;
  * @author KilaBash
  * @date 2023/6/21
  * @implNote BeamEmitter
+ * @port ELB_GG 
+ * @date_port 2026/03/29 
+ * @port_to fabric
  */
 @ParametersAreNonnullByDefault
 @LDLRegisterClient(name = "beam_emitter", registry = "photon:fx_object")

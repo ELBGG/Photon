@@ -8,8 +8,8 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import it.unimi.dsi.fastutil.floats.Float2ObjectFunction;
 import lombok.Getter;
 import lombok.Setter;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.Camera;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
@@ -27,8 +27,11 @@ import java.util.function.Supplier;
  * @author KilaBash
  * @date 2022/05/30
  * @implNote TrailParticle
+ * @port ELB_GG 
+ * @date_port 2026/03/29 
+ * @port_to fabric
  */
-@OnlyIn(Dist.CLIENT)
+@Environment(EnvType.CLIENT)
 public class TrailParticle implements IParticle {
     public enum UVMode {
         Stretch,

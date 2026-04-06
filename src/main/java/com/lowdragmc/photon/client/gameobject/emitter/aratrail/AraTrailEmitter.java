@@ -23,6 +23,9 @@ import java.util.Collections;
  * @author KilaBash
  * @date 2023/6/6
  * @implNote TrailEmitter
+ * @port ELB_GG 
+ * @date_port 2026/03/29 
+ * @port_to fabric
  */
 @ParametersAreNonnullByDefault
 @LDLRegisterClient(name = "ara_trail_emitter", registry = "photon:fx_object")

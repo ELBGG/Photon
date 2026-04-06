@@ -1,13 +1,12 @@
 package com.lowdragmc.photon.client.fx;
 
 import com.lowdragmc.lowdraglib2.Platform;
+import com.lowdragmc.photon.Photon;
 import net.minecraft.nbt.NbtAccounter;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtIo;
-import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
 
 import javax.annotation.Nullable;
@@ -19,8 +18,11 @@ import java.util.Map;
  * @author KilaBash
  * @date 2023/6/5
  * @implNote FXHelper
+ * @port ELB_GG 
+ * @date_port 2026/03/29 
+ * @port_to fabric
  */
-@OnlyIn(Dist.CLIENT)
+@Environment(EnvType.CLIENT)
 @ParametersAreNonnullByDefault
 public class FXHelper {
     private final static Map<ResourceLocation, FX> CACHE = new HashMap<>();
@@ -52,7 +54,8 @@ public class FXHelper {
             fx.setFxLocation(fxLocation);
             fx.deserializeNBT(Platform.getFrozenRegistry(), tag);
             return fx;
-        } catch (Exception ignored) {
+        } catch (Exception e) {
+            Photon.LOGGER.error("Failed to load FX: {}", fxLocation, e);
             return null;
         }
     }

@@ -12,13 +12,14 @@ import com.lowdragmc.lowdraglib2.gui.texture.Icons;
 import com.lowdragmc.lowdraglib2.gui.texture.IGuiTexture;
 import com.lowdragmc.lowdraglib2.gui.ui.UIElement;
 import com.lowdragmc.lowdraglib2.math.GradientColor;
+import com.lowdragmc.lowdraglib2.syncdata.IPersistedSerializable;
 import com.lowdragmc.photon.client.gameobject.emitter.data.number.color.GradientColorSelector;
 import com.lowdragmc.photon.client.gameobject.emitter.data.number.color.GradientColorTexture;
 import com.lowdragmc.photon.client.gameobject.emitter.data.number.color.RandomGradientColorTexture;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
-import net.neoforged.neoforge.common.util.INBTSerializable;
+
 import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.Nonnull;
@@ -85,7 +86,7 @@ public class GradientResource extends Resource<GradientResource.Gradients> {
         return container;
     }
 
-    public static class Gradients implements IConfigurable, INBTSerializable<CompoundTag> {
+    public static class Gradients implements IConfigurable, IPersistedSerializable {
         @Nonnull
         public final GradientColor gradient0;
         @Nullable

@@ -10,8 +10,8 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import lombok.Getter;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ShaderInstance;
 import org.lwjgl.opengl.GL;
@@ -22,7 +22,7 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-@OnlyIn(Dist.CLIENT)
+@Environment(EnvType.CLIENT)
 public class PhotonPostProcessing {
     public static class Mip {
         @Getter
@@ -49,7 +49,7 @@ public class PhotonPostProcessing {
     private static final List<Mip> MIPS = new ArrayList<>();
 
     public static void prepareTarget(int width, int height) {
-        int mipLevel = PhotonConfig.INSTANCE.bloomMipLevel.get();
+        int mipLevel = PhotonConfig.INSTANCE.bloomMipLevel;
         if (LAST_WIDTH == width && LAST_HEIGHT == height && MIPS.size() == mipLevel) return;
 
         HIGH_LIGHT = resize(HIGH_LIGHT, width / 2, height / 2);
@@ -100,7 +100,7 @@ public class PhotonPostProcessing {
         RenderSystem.defaultBlendFunc();
 
         brightPassShader.setSampler("inputSampler", srcTarget);
-        brightPassShader.safeGetUniform("Threshold").set(PhotonConfig.INSTANCE.bloomThreshold.get().floatValue());
+        brightPassShader.safeGetUniform("Threshold").set((float) PhotonConfig.INSTANCE.bloomThreshold);
         blitShader(brightPassShader, HIGH_LIGHT, false);
 
         // down-sampling
@@ -176,7 +176,7 @@ public class PhotonPostProcessing {
         RenderSystem.defaultBlendFunc();
         finalCombinePassShader.setSampler("inputA", MIPS.getFirst().swapA);
         finalCombinePassShader.setSampler("inputB", srcTarget);
-        finalCombinePassShader.safeGetUniform("BloomIntensive").set(PhotonConfig.INSTANCE.bloomIntensity.get().floatValue());
+        finalCombinePassShader.safeGetUniform("BloomIntensive").set((float) PhotonConfig.INSTANCE.bloomIntensity);
         blitShader(finalCombinePassShader, OUTPUT, false);
 
         RenderSystem.depthMask(true);

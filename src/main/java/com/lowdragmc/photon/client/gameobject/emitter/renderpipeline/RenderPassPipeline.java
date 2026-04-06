@@ -67,6 +67,12 @@ public class RenderPassPipeline extends BufferBuilder {
     private static HDRTarget SCENE_SAMPLER;
     private static boolean IS_SCENE_SAMPLER_DIRTY = true;
 
+    // Deferred render list: LevelRenderer calls ParticleEngine.render() before renderClouds().
+    // We defer the actual VFX render pass to after renderClouds() via LevelRendererMixin so that
+    // VFX appears on top of clouds. At that point prepareTarget() copies mainTarget-with-clouds,
+    // and the blit works correctly without any special blending tricks.
+    private static final List<RenderPassPipeline> DEFERRED_PIPELINES = new ArrayList<>();
+
     public static Comparator<PhotonFXRenderPass> makeRenderPassComparator() {
         return (passOne, passTwo) -> {
             var comparedResult = passOne.layerOrder() - passTwo.layerOrder();
@@ -88,6 +94,20 @@ public class RenderPassPipeline extends BufferBuilder {
     @Override
     public @Nullable MeshData build() {
         if (particles.isEmpty()) return null;
+        // In main game rendering, defer the entire render pass to after renderClouds().
+        // At flush time prepareTarget() will copy mainTarget-with-clouds as the backdrop,
+        // so VFX naturally composites on top of clouds with no special blending required.
+        // SceneView (getDrawMode() != null) and Iris paths still render immediately.
+        if (PhotonParticleManager.getDrawMode() == null &&
+                !(Photon.isShaderModInstalled() && GameRenderer.getParticleShader() instanceof ExtendedShaderAccessor)) {
+            DEFERRED_PIPELINES.add(this);
+            return null;
+        }
+        doRenderNow();
+        return null;
+    }
+
+    private void doRenderNow() {
         beforeRendering();
         RenderSystem.setShader(GameRenderer::getParticleShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
@@ -103,7 +123,6 @@ public class RenderPassPipeline extends BufferBuilder {
         }
         clearRenderingState();
         afterRendering();
-        return null;
     }
 
     private void beforeRendering() {
@@ -207,7 +226,7 @@ public class RenderPassPipeline extends BufferBuilder {
             RenderSystem.viewport(0, 0, background.width, background.height);
         }
 
-        var doBloom = PhotonConfig.INSTANCE.enableBloom.get() && (!Photon.isUsingShaderPack() || PhotonConfig.INSTANCE.enableBloomWithIrisShader.get());
+        var doBloom = PhotonConfig.INSTANCE.enableBloom && (!Photon.isUsingShaderPack() || PhotonConfig.INSTANCE.enableBloomWithIrisShader);
         RenderTarget outputTarget;
         if (doBloom) {
             outputTarget = PhotonPostProcessing.postTarget(DRAW_TARGET);
@@ -248,7 +267,11 @@ public class RenderPassPipeline extends BufferBuilder {
             GlStateManager._enableDepthTest();
             GlStateManager._glBindFramebuffer(GL30.GL_FRAMEBUFFER, mainTarget.frameBufferId);
         } else {
-            ShaderUtils.fastBlit(outputTarget, mainTarget);
+            if (LDLibShaders.getBlitShader() != null) {
+                ShaderUtils.fastBlit(outputTarget, mainTarget);
+            } else {
+                Photon.LOGGER.error("LDLibShaders.blitShader is null, cannot blit particle render target. Is LDLib2 client initialized?");
+            }
         }
 
         // restore view port
@@ -334,6 +357,28 @@ public class RenderPassPipeline extends BufferBuilder {
 //            }
 //        }
 //    }
+
+    /**
+     * Renders and blits all deferred Photon VFX pipelines.
+     * Called by LevelRendererMixin after renderClouds() returns. At this point mainTarget
+     * already contains clouds, so prepareTarget() uses them as the backdrop and VFX
+     * composites on top via the normal blit — no special blending required.
+     */
+    public static void flushRender() {
+        if (DEFERRED_PIPELINES.isEmpty()) return;
+        for (var pipeline : DEFERRED_PIPELINES) {
+            pipeline.doRenderNow();
+        }
+        DEFERRED_PIPELINES.clear();
+    }
+
+    /** Discards deferred pipelines. Called on level change to avoid rendering stale state. */
+    public static void clearDeferredRender() {
+        for (var pipeline : DEFERRED_PIPELINES) {
+            pipeline.clearRenderingState();
+        }
+        DEFERRED_PIPELINES.clear();
+    }
 
     ///  Scene Sampler
     public @Nonnull HDRTarget getSceneSampler() {

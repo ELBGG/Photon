@@ -1,0 +1,6 @@
+{
+  "loader": "special-model-loader:obj",
+  "model": "photon:models/obj/hello_world.obj",
+  "textures": {},
+  "flip_v": true
+}

@@ -5,7 +5,7 @@ import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
-import net.neoforged.neoforge.common.util.INBTSerializable;
+
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.ArrayList;
@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-public record FXData(List<IFXObject> objects) implements INBTSerializable<CompoundTag> {
+public record FXData(List<IFXObject> objects)  {
 
     public FXData() {
         this(new ArrayList<>());
@@ -34,7 +34,6 @@ public record FXData(List<IFXObject> objects) implements INBTSerializable<Compou
         return tag;
     }
 
-    @Override
     public void deserializeNBT(HolderLookup.Provider provider, CompoundTag tag) {
         objects.clear();
         var list = tag.getList("fxObjects", ListTag.TAG_COMPOUND);

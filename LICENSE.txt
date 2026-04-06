@@ -47,7 +47,7 @@ However, direct modifications or forks of this mod must continue to comply with 
 
 ---
 
-Full license text: https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode  
+Full license text: https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode
 Human-readable summary: https://creativecommons.org/licenses/by-nc-sa/4.0/
 
 For commercial licensing inquiries, contact: yefancy@foxmail.com

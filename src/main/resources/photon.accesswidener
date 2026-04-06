@@ -1,0 +1,5 @@
+accessWidener v2 named
+
+# ParticleEngine
+accessible class net/minecraft/client/particle/ParticleEngine$MutableSpriteSet
+accessible field net/minecraft/client/particle/ParticleEngine spriteSets Ljava/util/Map;

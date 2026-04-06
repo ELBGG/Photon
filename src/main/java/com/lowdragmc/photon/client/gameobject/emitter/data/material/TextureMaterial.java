@@ -21,8 +21,8 @@ import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import dev.vfyjxf.taffy.style.AlignItems;
 import lombok.Getter;
 import lombok.Setter;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
@@ -33,7 +33,7 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-@OnlyIn(Dist.CLIENT)
+@Environment(EnvType.CLIENT)
 @ParametersAreNonnullByDefault
 @LDLRegisterClient(name = "texture", registry = "photon:material")
 @Setter

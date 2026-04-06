@@ -13,13 +13,13 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 
 import javax.annotation.Nonnull;
 import java.util.Optional;
 
-@OnlyIn(Dist.CLIENT)
+@Environment(EnvType.CLIENT)
 @Getter
 @Setter
 @Accessors(chain = true)

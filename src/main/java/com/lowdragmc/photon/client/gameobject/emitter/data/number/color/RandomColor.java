@@ -19,6 +19,9 @@ import static com.lowdragmc.lowdraglib2.utils.ColorUtils.*;
  * @author KilaBash
  * @date 2023/5/27
  * @implNote RandomColor
+ * @port ELB_GG 
+ * @date_port 2026/03/29 
+ * @port_to fabric
  */
 @LDLRegisterClient(name = "random_color", registry = "photon:number_function")
 public class RandomColor extends RandomConstant {

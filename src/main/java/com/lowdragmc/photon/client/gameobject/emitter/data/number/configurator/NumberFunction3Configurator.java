@@ -15,6 +15,9 @@ import java.util.function.Supplier;
  * @author KilaBash
  * @date 2023/5/27
  * @implNote NumberFunction3Configurator
+ * @port ELB_GG 
+ * @date_port 2026/03/29 
+ * @port_to fabric
  */
 public class NumberFunction3Configurator extends ValueConfigurator<NumberFunction3> {
     @Getter

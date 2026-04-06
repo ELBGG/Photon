@@ -1,7 +1,7 @@
 package com.lowdragmc.photon.client.fx;
 
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
@@ -9,8 +9,11 @@ import org.joml.Vector3f;
  * @author KilaBash
  * @date 2023/6/5
  * @implNote IFXEffect
+ * @port ELB_GG 
+ * @date_port 2026/03/29 
+ * @port_to fabric
  */
-@OnlyIn(Dist.CLIENT)
+@Environment(EnvType.CLIENT)
 public interface IFXEffectExecutor extends IEffectExecutor {
     /**
      * get all emitters included in this effect.

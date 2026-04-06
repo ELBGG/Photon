@@ -14,10 +14,10 @@ import com.lowdragmc.photon.client.fx.FXHelper;
 import com.lowdragmc.photon.core.mixins.accessor.ParticleEngineAccessor;
 import com.lowdragmc.photon.gui.editor.FXEditor;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.ClickEvent;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 
@@ -29,16 +29,18 @@ import static com.lowdragmc.lowdraglib2.client.ClientCommands.createLiteral;
  * @author KilaBash
  * @date 2023/2/9
  * @implNote ClientCommands
+ * @port ELB_GG 
+ * @date_port 2026/03/29 
+ * @port_to fabric
  */
-@OnlyIn(Dist.CLIENT)
+@Environment(EnvType.CLIENT)
 public class ClientCommands {
 
-    @SuppressWarnings("unchecked")
-    public static <S> List<LiteralArgumentBuilder<S>> createClientCommands() {
+    public static List<LiteralArgumentBuilder<FabricClientCommandSource>> createClientCommands() {
         return List.of(
-                (LiteralArgumentBuilder<S>) createLiteral("photon_editor").executes(context -> {
+                createLiteral("photon_editor").executes(context -> {
                     if (Platform.getMinecraftServer() != null && !Platform.getMinecraftServer().isSingleplayer()) {
-                        context.getSource().sendFailure(Component.literal("This command can only be used in singleplayer"));
+                        context.getSource().sendError(Component.literal("This command can only be used in singleplayer"));
                         return 0;
                     }
                     var minecraft = Minecraft.getInstance();
@@ -48,10 +50,10 @@ public class ClientCommands {
                             .shouldCloseOnEsc(false)
                             .shouldCloseOnKeyInventory(false);
                     var screen = new ModularUIScreen(ui, Component.empty());
-                    minecraft.setScreen(screen);
+                    minecraft.tell(() -> minecraft.setScreen(screen));
                     return 1;
                 }),
-                (LiteralArgumentBuilder<S>) createLiteral("photon_client")
+                createLiteral("photon_client")
                         .then(createLiteral("clear_particles")
                                 .executes(context -> {
                                     if (Minecraft.getInstance().particleEngine instanceof ParticleEngineAccessor accessor) {
@@ -72,7 +74,7 @@ public class ClientCommands {
                                     }
                                     return 1;
                                 }))
-                        .then(Commands.literal("convert").requires(source -> source.hasPermission(2))
+                        .then(createLiteral("convert")
                                 .executes(context -> {
                                     if (Minecraft.getInstance().player != null) {
                                         Minecraft.getInstance().player.sendSystemMessage(

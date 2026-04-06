@@ -19,8 +19,8 @@ import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.resources.ResourceLocation;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import org.joml.Vector4f;
 
 import javax.annotation.Nonnull;
@@ -30,7 +30,9 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.HashMap;
 import java.util.Map;
 
-@OnlyIn(Dist.CLIENT)
+import com.lowdragmc.photon.core.mixins.accessor.ParticleEngineAccessor;
+
+@Environment(EnvType.CLIENT)
 @ParametersAreNonnullByDefault
 @LDLRegisterClient(name = "sprite", registry = "photon:material")
 public class SpriteMaterial extends ShaderInstanceMaterial {
@@ -49,7 +51,7 @@ public class SpriteMaterial extends ShaderInstanceMaterial {
     @Nullable
     private SpriteSet getSpriteSet() {
         if (spriteLocation == null) return null;
-        return Minecraft.getInstance().particleEngine.spriteSets.get(spriteLocation);
+        return (SpriteSet) ((ParticleEngineAccessor) Minecraft.getInstance().particleEngine).getSpriteSets().get(spriteLocation);
     }
 
     @Override
@@ -102,6 +104,6 @@ public class SpriteMaterial extends ShaderInstanceMaterial {
         super.buildConfigurator(father);
         father.addConfigurator(new SelectorConfigurator<>("SpriteMaterial.spriteLocation",
                 () -> this.spriteLocation, s -> this.spriteLocation = s, ResourceLocation.parse(""),
-                true, Minecraft.getInstance().particleEngine.spriteSets.keySet().stream().toList(), ResourceLocation::toString));
+                true, ((ParticleEngineAccessor) Minecraft.getInstance().particleEngine).getSpriteSets().keySet().stream().toList(), ResourceLocation::toString));
     }
 }

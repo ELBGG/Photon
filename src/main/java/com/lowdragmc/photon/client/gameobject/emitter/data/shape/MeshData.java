@@ -25,11 +25,9 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.Blocks;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
-import net.neoforged.neoforge.client.model.IQuadTransformer;
-import net.neoforged.neoforge.client.model.data.ModelData;
-import net.neoforged.neoforge.common.util.INBTSerializable;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+
 import org.joml.Vector3f;
 import lombok.Getter;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -47,7 +45,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-public final class MeshData implements INBTSerializable<CompoundTag>, IConfigurable, IPersistedSerializable {
+public final class MeshData implements IConfigurable, IPersistedSerializable {
     @Getter
     @Configurable(name = "MeshData.modelLocation")
     private ResourceLocation modelLocation = ResourceLocation.withDefaultNamespace("block/stone");
@@ -99,9 +97,9 @@ public final class MeshData implements INBTSerializable<CompoundTag>, IConfigura
                     Material::sprite,
                     BlockModelRotation.X0_Y0);
         }
-        var quads = new ArrayList<>(bakedModel.getQuads(null, null, random, ModelData.EMPTY, null));
+        var quads = new ArrayList<>(bakedModel.getQuads(null, null, random));
         for (var side : Direction.values()) {
-            quads.addAll(bakedModel.getQuads(null, side, random, ModelData.EMPTY, null));
+            quads.addAll(bakedModel.getQuads(null, side, random));
         }
         loadFromQuads(quads);
     }
@@ -118,7 +116,7 @@ public final class MeshData implements INBTSerializable<CompoundTag>, IConfigura
             var vertices = quad.getVertices();
             Vector3f[] points = new Vector3f[4];
             for (int vertexIndex = 0; vertexIndex < 4; vertexIndex++) {
-                int offset = vertexIndex * IQuadTransformer.STRIDE + IQuadTransformer.POSITION;
+                int offset = vertexIndex * 8 + 0;
                 points[vertexIndex] = new Vector3f(Float.intBitsToFloat(vertices[offset]) - 0.5f,
                         Float.intBitsToFloat(vertices[offset + 1]) - 0.5f,
                         Float.intBitsToFloat(vertices[offset + 2]) - 0.5f);
@@ -214,7 +212,7 @@ public final class MeshData implements INBTSerializable<CompoundTag>, IConfigura
         return abc.area;
     }
 
-    @OnlyIn(Dist.CLIENT)
+    @Environment(EnvType.CLIENT)
     public Scene createPreviewScene() {
         var level = new TrackedDummyWorld();
         level.addBlock(BlockPos.ZERO, BlockInfo.fromBlock(Blocks.AIR));
@@ -236,7 +234,7 @@ public final class MeshData implements INBTSerializable<CompoundTag>, IConfigura
         return scene;
     }
 
-    @OnlyIn(Dist.CLIENT)
+    @Environment(EnvType.CLIENT)
     public void drawLineFrames(PoseStack poseStack) {
         var edges = getEdges();
         if (edges.isEmpty()) return;
@@ -274,7 +272,7 @@ public final class MeshData implements INBTSerializable<CompoundTag>, IConfigura
     }
 
     @Override
-    @OnlyIn(Dist.CLIENT)
+    @Environment(EnvType.CLIENT)
     public void buildConfigurator(ConfiguratorGroup father) {
         father.addConfigurators(new Configurator("ldlib.gui.editor.group.preview").addChild(createPreviewScene()));
         IConfigurable.super.buildConfigurator(father);
@@ -351,5 +349,19 @@ public final class MeshData implements INBTSerializable<CompoundTag>, IConfigura
     @Override
     public int hashCode() {
         return Objects.hashCode(modelLocation);
+    }
+
+    @Override
+    public CompoundTag serializeToCompound() {
+        var tag = new CompoundTag();
+        tag.putString("modelLocation", modelLocation.toString());
+        return tag;
+    }
+
+    @Override
+    public void deserializeFromCompound(CompoundTag tag) {
+        if (tag.contains("modelLocation")) {
+            setModelLocation(ResourceLocation.parse(tag.getString("modelLocation")));
+        }
     }
 }

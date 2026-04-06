@@ -6,7 +6,7 @@ import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
-import net.neoforged.neoforge.common.util.INBTSerializable;
+
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -19,7 +19,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 @Getter
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public class FX implements INBTSerializable<CompoundTag> {
+public class FX  {
     public static final String SUFFIX = ".fx";
     @Nullable
     @Setter
@@ -30,14 +30,12 @@ public class FX implements INBTSerializable<CompoundTag> {
         fxData = new FXData();
     }
 
-    @Override
     public CompoundTag serializeNBT(HolderLookup.Provider provider) {
         var tag = new CompoundTag();
         tag.put("fxData", fxData.serializeNBT(provider));
         return tag;
     }
 
-    @Override
     public void deserializeNBT(HolderLookup.Provider provider, CompoundTag tag) {
         fxData.deserializeNBT(provider, tag.getCompound("fxData"));
     }

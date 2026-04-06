@@ -3,8 +3,8 @@ package com.lowdragmc.photon.client.fx;
 import com.lowdragmc.photon.client.gameobject.IFXObject;
 import org.joml.Vector3f;
 import lombok.Setter;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -15,8 +15,11 @@ import java.util.*;
  * @author KilaBash
  * @date 2023/6/5
  * @implNote BlockEffect
+ * @port ELB_GG 
+ * @date_port 2026/03/29 
+ * @port_to fabric
  */
-@OnlyIn(Dist.CLIENT)
+@Environment(EnvType.CLIENT)
 public class BlockEffectExecutor extends FXEffectExecutor {
     public static Map<BlockPos, List<BlockEffectExecutor>> CACHE = new HashMap<>();
     public final BlockPos pos;

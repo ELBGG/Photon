@@ -12,6 +12,9 @@ import javax.annotation.Nullable;
  * @author KilaBash
  * @date 2023/7/19
  * @implNote FXEffect
+ * @port ELB_GG 
+ * @date_port 2026/03/29 
+ * @port_to fabric
  */
 public abstract class FXEffectExecutor implements IFXEffectExecutor {
     @Getter

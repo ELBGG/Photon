@@ -1,6 +1,7 @@
 package com.lowdragmc.photon.client.gameobject.emitter.particle;
 
 import com.lowdragmc.lowdraglib2.LDLib2;
+import com.lowdragmc.lowdraglib2.client.utils.GLUtil;
 import com.lowdragmc.lowdraglib2.utils.Vector3fHelper;
 import com.lowdragmc.photon.client.AutoCloseCleaner;
 import com.lowdragmc.photon.client.gameobject.particle.TileParticle;
@@ -12,8 +13,6 @@ import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.client.renderer.block.model.BakedQuad;
-import net.neoforged.neoforge.client.model.IQuadTransformer;
-import net.neoforged.neoforge.client.model.data.ModelData;
 import org.apache.commons.lang3.tuple.Pair;
 import org.joml.Quaternionf;
 import org.lwjgl.BufferUtils;
@@ -25,6 +24,10 @@ import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
+import org.lwjgl.opengl.ARBInstancedArrays;
+import org.lwjgl.opengl.GL;
+import org.lwjgl.opengl.GL33;
 
 import static org.lwjgl.opengl.GL30.*;
 import static org.lwjgl.opengl.GL33.*;
@@ -133,7 +136,7 @@ public class ParticleInstanceRenderer {
                         case WEST, EAST -> 0.6F;
                     };
                 }
-                for (var quad : model.renderModel(null, null, null, side, LDLib2.RANDOM, ModelData.EMPTY, null)) {
+                for (var quad : model.renderModel(null, null, null, side, LDLib2.RANDOM, null, null)) {
                     quads.add(Pair.of(quad, brightness));
                 }
             }
@@ -171,7 +174,7 @@ public class ParticleInstanceRenderer {
                         var z = byteBuffer.getFloat(8) + pivotPoint.z; // 2
                         var u = byteBuffer.getFloat(16); // 4 u
                         var v = byteBuffer.getFloat(20); // 5 v
-                        var normalData = byteBuffer.getInt(IQuadTransformer.NORMAL * 4);
+                        var normalData = byteBuffer.getInt(7 * 4);
                         float nX = ((byte) normalData      ) / 127.0f;
                         float nY = ((byte)(normalData>>8 )) / 127.0f;
                         float nZ = ((byte)(normalData>>16)) / 127.0f;
@@ -251,6 +254,8 @@ public class ParticleInstanceRenderer {
         }
     }
 
+    // Removed local vertexAttribDivisorCompat
+
     private void createOrResizeInstanceData(int requestedMaxSize) {
         if (resource == null) return;
 
@@ -289,35 +294,35 @@ public class ParticleInstanceRenderer {
                 // Here we define them always to keep it simple and robust.
                 glVertexAttribPointer(attribIndex, 3, GL_FLOAT, false, stride, offset);
                 glEnableVertexAttribArray(attribIndex);
-                glVertexAttribDivisor(attribIndex, 1);
+                GLUtil.vertexAttribDivisor(attribIndex, 1);
                 attribIndex++;
                 offset += 3 * Float.BYTES;
 
                 // scale vec3
                 glVertexAttribPointer(attribIndex, 3, GL_FLOAT, false, stride, offset);
                 glEnableVertexAttribArray(attribIndex);
-                glVertexAttribDivisor(attribIndex, 1);
+                GLUtil.vertexAttribDivisor(attribIndex, 1);
                 attribIndex++;
                 offset += 3 * Float.BYTES;
 
                 // rotation vec4
                 glVertexAttribPointer(attribIndex, 4, GL_FLOAT, false, stride, offset);
                 glEnableVertexAttribArray(attribIndex);
-                glVertexAttribDivisor(attribIndex, 1);
+                GLUtil.vertexAttribDivisor(attribIndex, 1);
                 attribIndex++;
                 offset += 4 * Float.BYTES;
 
                 // color vec4
                 glVertexAttribPointer(attribIndex, 4, GL_FLOAT, false, stride, offset);
                 glEnableVertexAttribArray(attribIndex);
-                glVertexAttribDivisor(attribIndex, 1);
+                GLUtil.vertexAttribDivisor(attribIndex, 1);
                 attribIndex++;
                 offset += 4 * Float.BYTES;
 
                 // light int
                 glVertexAttribIPointer(attribIndex, 1, GL_UNSIGNED_INT, stride, offset);
                 glEnableVertexAttribArray(attribIndex);
-                glVertexAttribDivisor(attribIndex, 1);
+                GLUtil.vertexAttribDivisor(attribIndex, 1);
                 attribIndex++;
                 offset += Float.BYTES;
             }
@@ -339,49 +344,49 @@ public class ParticleInstanceRenderer {
             if (newVBO) {
                 glVertexAttribPointer(attribIndex, 3, GL_FLOAT, false, stride, offset);
                 glEnableVertexAttribArray(attribIndex);
-                glVertexAttribDivisor(attribIndex, 1);
+                GLUtil.vertexAttribDivisor(attribIndex, 1);
                 attribIndex++;
                 offset += 3 * Float.BYTES;
 
                 // size vec2
                 glVertexAttribPointer(attribIndex, 2, GL_FLOAT, false, stride, offset);
                 glEnableVertexAttribArray(attribIndex);
-                glVertexAttribDivisor(attribIndex, 1);
+                GLUtil.vertexAttribDivisor(attribIndex, 1);
                 attribIndex++;
                 offset += 2 * Float.BYTES;
 
                 // scale vec3
                 glVertexAttribPointer(attribIndex, 3, GL_FLOAT, false, stride, offset);
                 glEnableVertexAttribArray(attribIndex);
-                glVertexAttribDivisor(attribIndex, 1);
+                GLUtil.vertexAttribDivisor(attribIndex, 1);
                 attribIndex++;
                 offset += 3 * Float.BYTES;
 
                 // rotation vec4
                 glVertexAttribPointer(attribIndex, 4, GL_FLOAT, false, stride, offset);
                 glEnableVertexAttribArray(attribIndex);
-                glVertexAttribDivisor(attribIndex, 1);
+                GLUtil.vertexAttribDivisor(attribIndex, 1);
                 attribIndex++;
                 offset += 4 * Float.BYTES;
 
                 // color vec4
                 glVertexAttribPointer(attribIndex, 4, GL_FLOAT, false, stride, offset);
                 glEnableVertexAttribArray(attribIndex);
-                glVertexAttribDivisor(attribIndex, 1);
+                GLUtil.vertexAttribDivisor(attribIndex, 1);
                 attribIndex++;
                 offset += 4 * Float.BYTES;
 
                 // uv vec4
                 glVertexAttribPointer(attribIndex, 4, GL_FLOAT, false, stride, offset);
                 glEnableVertexAttribArray(attribIndex);
-                glVertexAttribDivisor(attribIndex, 1);
+                GLUtil.vertexAttribDivisor(attribIndex, 1);
                 offset += 4 * Float.BYTES;
                 attribIndex++;
 
                 // light int
                 glVertexAttribIPointer(attribIndex, 1, GL_UNSIGNED_INT, stride, offset);
                 glEnableVertexAttribArray(attribIndex);
-                glVertexAttribDivisor(attribIndex, 1);
+                GLUtil.vertexAttribDivisor(attribIndex, 1);
                 offset += Float.BYTES;
                 attribIndex++;
             }

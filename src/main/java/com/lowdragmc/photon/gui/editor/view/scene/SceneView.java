@@ -195,7 +195,7 @@ public class SceneView extends View {
                 fxObjectInfoView.getInspected().drawEditorAfterWorld(this, bufferSource, partialTicks);
                 if (isCullBoxVisible && fxObjectInfoView.getInspected() instanceof FXObject fxObject) {
                     var cullBox = fxObject.getRenderBoundingBox(partialTicks);
-                    if (cullBox != AABB.INFINITE) {
+                    if (cullBox.getSize() < 1e15) {
                         RenderSystem.enableBlend();
                         RenderSystem.disableDepthTest();
                         RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);

@@ -11,6 +11,7 @@ import com.lowdragmc.lowdraglib2.gui.ui.elements.Dialog;
 import com.lowdragmc.lowdraglib2.gui.ui.UIElement;
 import com.lowdragmc.lowdraglib2.gui.ui.elements.Button;
 import com.lowdragmc.lowdraglib2.gui.ui.styletemplate.Sprites;
+import com.lowdragmc.lowdraglib2.syncdata.IPersistedSerializable;
 import com.lowdragmc.photon.client.gameobject.emitter.data.number.curve.*;
 import dev.vfyjxf.taffy.style.TaffyDimension;
 import net.minecraft.core.HolderLookup;
@@ -18,7 +19,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
-import net.neoforged.neoforge.common.util.INBTSerializable;
+
 import oshi.util.tuples.Pair;
 
 import javax.annotation.Nonnull;
@@ -140,7 +141,7 @@ public class CurveResource extends Resource<CurveResource.Curves> {
         return container;
     }
 
-    public static class Curves implements INBTSerializable<CompoundTag> {
+    public static class Curves implements IPersistedSerializable {
         @Nonnull
         public final ECBCurves curves0;
         @Nullable
@@ -174,12 +175,12 @@ public class CurveResource extends Resource<CurveResource.Curves> {
 
         @Override
         public void deserializeNBT(@Nonnull HolderLookup.Provider provider, CompoundTag nbt) {
-            if (nbt.get("a") instanceof ListTag list) {
-                curves0.deserializeNBT(provider, list);
+            if (nbt.get("a") instanceof CompoundTag tag) {
+                curves0.deserializeNBT(provider, tag);
             }
             if (curves1 != null) {
-                if (nbt.get("b") instanceof ListTag list) {
-                    curves1.deserializeNBT(provider, list);
+                if (nbt.get("b") instanceof CompoundTag tag) {
+                    curves1.deserializeNBT(provider, tag);
                 }
             }
         }

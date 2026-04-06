@@ -14,7 +14,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.util.FastColor;
-import net.neoforged.neoforge.common.util.INBTSerializable;
+
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -22,8 +22,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
+import com.lowdragmc.lowdraglib2.utils.INBTSerializable;
 
-public class GradientTexture implements AutoCloseable, IConfigurable, INBTSerializable<ListTag> {
+public class GradientTexture implements AutoCloseable, IConfigurable, INBTSerializable<Tag> {
     private final int width;
     private final int height;
     @Configurable(name = "gradients", canCollapse = false, collapse = false)
@@ -110,21 +111,34 @@ public class GradientTexture implements AutoCloseable, IConfigurable, INBTSerial
     }
 
     @Override
-    public ListTag serializeNBT(@Nonnull HolderLookup.Provider provider) {
+    public Tag serializeNBT(@Nonnull HolderLookup.Provider provider) {
+        var tag = new CompoundTag();
         var listTag = new ListTag();
         for (var gradientColor : gradients) {
             listTag.add(gradientColor.serializeNBT(provider));
         }
-        return listTag;
+        tag.put("gradients", listTag);
+        return tag;
     }
 
     @Override
-    public void deserializeNBT(@Nonnull HolderLookup.Provider provider, @Nonnull ListTag listTag) {
+    public void deserializeNBT(@Nonnull HolderLookup.Provider provider, @Nonnull Tag tag) {
         gradients.clear();
-        for (Tag tag : listTag) {
-            var gradientColor = new GradientColor();
-            gradientColor.deserializeNBT(provider, (CompoundTag) tag);
-            gradients.add(gradientColor);
+        if (tag instanceof CompoundTag compound && compound.contains("gradients", net.minecraft.nbt.Tag.TAG_LIST)) {
+            var listTag = compound.getList("gradients", net.minecraft.nbt.Tag.TAG_COMPOUND);
+            for (Tag t : listTag) {
+                var gradientColor = new GradientColor();
+                gradientColor.deserializeNBT(provider, (CompoundTag) t);
+                gradients.add(gradientColor);
+            }
+        } else if (tag instanceof ListTag listTag) {
+            for (Tag t : listTag) {
+                if (t instanceof CompoundTag compound) {
+                    var gradientColor = new GradientColor();
+                    gradientColor.deserializeNBT(provider, compound);
+                    gradients.add(gradientColor);
+                }
+            }
         }
         markAsDirty();
     }

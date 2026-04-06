@@ -5,13 +5,13 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 
 import static com.mojang.blaze3d.platform.GlStateManager.DestFactor;
 import static com.mojang.blaze3d.platform.GlStateManager.SourceFactor;
 
-@OnlyIn(Dist.CLIENT)
+@Environment(EnvType.CLIENT)
 @Getter @Setter
 @EqualsAndHashCode
 public class BlendMode {

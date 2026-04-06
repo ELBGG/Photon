@@ -1,0 +1,6 @@
+{
+  "loader": "special-model-loader:obj",
+  "model": "photon:models/obj/character.obj",
+  "textures": {},
+  "flip_v": true
+}

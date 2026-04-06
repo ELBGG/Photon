@@ -14,8 +14,8 @@ import com.mojang.blaze3d.vertex.*;
  import lombok.EqualsAndHashCode;
  import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.Nonnull;
@@ -27,8 +27,11 @@ import java.util.Collection;
  * @author KilaBash
  * @date 2023/6/5
  * @implNote IPhotonParticleRenderType
+ * @port ELB_GG 
+ * @date_port 2026/03/29 
+ * @port_to fabric
  */
-@OnlyIn(Dist.CLIENT)
+@Environment(EnvType.CLIENT)
 @ParametersAreNonnullByDefault
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public abstract class PhotonFXRenderPass {

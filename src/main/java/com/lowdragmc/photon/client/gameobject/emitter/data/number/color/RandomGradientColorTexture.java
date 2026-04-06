@@ -5,8 +5,8 @@ import com.lowdragmc.lowdraglib2.gui.texture.TransformTexture;
 import com.lowdragmc.lowdraglib2.math.GradientColor;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.GuiGraphics;
 
 public class RandomGradientColorTexture extends TransformTexture {
@@ -20,7 +20,7 @@ public class RandomGradientColorTexture extends TransformTexture {
     }
 
     @Override
-    @OnlyIn(Dist.CLIENT)
+    @Environment(EnvType.CLIENT)
     protected void drawInternal(GuiGraphics graphics, float mouseX, float mouseY, float x, float y, float width, float height, float partialTicks) {
         // render color bar
         var mat = graphics.pose().last().pose();

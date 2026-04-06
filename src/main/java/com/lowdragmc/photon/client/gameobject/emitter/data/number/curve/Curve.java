@@ -16,6 +16,9 @@ import java.util.function.Supplier;
  * @author KilaBash
  * @date 2023/5/26
  * @implNote Curve
+ * @port ELB_GG 
+ * @date_port 2026/03/29 
+ * @port_to fabric
  */
 @LDLRegisterClient(name = "curve", registry = "photon:number_function")
 @EqualsAndHashCode(callSuper = false)

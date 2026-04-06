@@ -19,8 +19,8 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import lombok.Getter;
 import lombok.Setter;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.util.Mth;
 
 
@@ -28,8 +28,11 @@ import net.minecraft.util.Mth;
  * @author KilaBash
  * @date 2023/5/31
  * @implNote NoiseSetting
+ * @port ELB_GG 
+ * @date_port 2026/03/29 
+ * @port_to fabric
  */
-@OnlyIn(Dist.CLIENT)
+@Environment(EnvType.CLIENT)
 @Setter
 @Getter
 public class NoiseSetting extends ToggleGroup {
@@ -139,7 +142,7 @@ public class NoiseSetting extends ToggleGroup {
         }
 
         @Override
-        @OnlyIn(Dist.CLIENT)
+        @Environment(EnvType.CLIENT)
         public void draw(GuiGraphics graphics, float mouseX, float mouseY, float x, float y, float width, float height, float partialTicks) {
             noise.get().setSeed(seed);
 

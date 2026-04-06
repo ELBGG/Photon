@@ -7,8 +7,8 @@ import com.lowdragmc.photon.client.gameobject.emitter.renderpipeline.ParticleQue
 import lombok.Getter;
 import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.world.phys.AABB;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
@@ -21,7 +21,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
-@OnlyIn(Dist.CLIENT)
+@Environment(EnvType.CLIENT)
 @ParametersAreNonnullByDefault
 public abstract class Emitter extends FXObject implements IParticleEmitter {
     // runtime
@@ -156,7 +156,8 @@ public abstract class Emitter extends FXObject implements IParticleEmitter {
     @Nonnull
     public AABB getRenderBoundingBox(float partialTicks) {
         var cullBox = getCullBox(partialTicks);
-        return cullBox == null ? AABB.INFINITE : cullBox;
+        return cullBox == null ? new AABB(-Double.MAX_VALUE/2, -Double.MAX_VALUE/2, -Double.MAX_VALUE/2,
+                Double.MAX_VALUE/2, Double.MAX_VALUE/2, Double.MAX_VALUE/2) : cullBox;
     }
 
     public int getAge() {

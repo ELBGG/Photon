@@ -2,13 +2,13 @@ package com.lowdragmc.photon.client.gameobject.emitter.data.material;
 
 import com.lowdragmc.lowdraglib2.configurator.ui.ConfiguratorGroup;
 import com.lowdragmc.lowdraglib2.registry.annotation.LDLRegisterClient;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.world.inventory.InventoryMenu;
 
 import javax.annotation.Nonnull;
 
-@OnlyIn(Dist.CLIENT)
+@Environment(EnvType.CLIENT)
 @LDLRegisterClient(name = "block_atlas", registry = "photon:material", manual = true)
 public final class BlockTextureSheetMaterial extends TextureMaterial {
     public static final BlockTextureSheetMaterial INSTANCE = new BlockTextureSheetMaterial();

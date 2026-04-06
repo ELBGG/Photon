@@ -28,7 +28,7 @@ layout(location = 8) in int iLight;
 in vec3 Position;
 in vec4 Color;
 in vec2 UV0;
-in ivec2 UV2;
+in ivec2 UV1;
 in vec3 Normal;
 
 #endif
@@ -81,7 +81,7 @@ ParticleData getParticleData() {
     data.Position = Position;
     data.Color = Color;
     data.UV = UV0;
-    data.LightUV = UV2;
+    data.LightUV = UV1;
     data.Normal = Normal;
 
 #endif

@@ -36,8 +36,8 @@ public class FXEditor extends Editor {
 
     @Override
     protected void initMenus() {
-        super.initMenus();
         fileMenu.addProjectProvider(FXProject.TYPE);
+        super.initMenus();
     }
 
     @Override

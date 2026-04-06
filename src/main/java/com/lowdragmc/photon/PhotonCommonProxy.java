@@ -2,26 +2,25 @@ package com.lowdragmc.photon;
 
 import com.lowdragmc.photon.command.EntityEffectCommand;
 import com.lowdragmc.photon.command.FxLocationArgument;
+import com.lowdragmc.photon.core.mixins.accessor.ArgumentTypeInfosAccessor;
 import net.minecraft.commands.synchronization.ArgumentTypeInfo;
 import net.minecraft.commands.synchronization.ArgumentTypeInfos;
 import net.minecraft.commands.synchronization.SingletonArgumentInfo;
-import net.minecraft.core.registries.Registries;
-import net.neoforged.bus.api.IEventBus;
-import net.neoforged.neoforge.registries.DeferredHolder;
-import net.neoforged.neoforge.registries.DeferredRegister;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 
 public class PhotonCommonProxy {
-    static final DeferredRegister<ArgumentTypeInfo<?, ?>> ARG_TYPES = DeferredRegister.create(Registries.COMMAND_ARGUMENT_TYPE, Photon.MOD_ID);
-    static final DeferredHolder<ArgumentTypeInfo<?, ?>, SingletonArgumentInfo<FxLocationArgument>> FX_LOCATION_ARG_TYPE
-            = ARG_TYPES.register("fx_location", () -> ArgumentTypeInfos.registerByClass(FxLocationArgument.class,
-            SingletonArgumentInfo.contextFree(FxLocationArgument::new)));
-    static final DeferredHolder<ArgumentTypeInfo<?, ?>, SingletonArgumentInfo<EntityEffectCommand.AutoRotateType>> AUTO_ROTATE_ARG_TYPE
-            = ARG_TYPES.register("fx_auto_rotate", () -> ArgumentTypeInfos.registerByClass(EntityEffectCommand.AutoRotateType.class,
-            SingletonArgumentInfo.contextFree(EntityEffectCommand.AutoRotateType::new)));
 
-    public PhotonCommonProxy(IEventBus eventBus) {
-        eventBus.addListener(PhotonNetworking::registerPayloads);
-        ARG_TYPES.register(eventBus);
+    public static void init() {
+        PhotonNetworking.registerPayloads();
+        
+        ArgumentTypeInfosAccessor.invokeRegister(BuiltInRegistries.COMMAND_ARGUMENT_TYPE, Photon.id("fx_location").toString(),
+                FxLocationArgument.class, SingletonArgumentInfo.contextFree(FxLocationArgument::new));
+                
+        ArgumentTypeInfosAccessor.invokeRegister(BuiltInRegistries.COMMAND_ARGUMENT_TYPE, Photon.id("fx_auto_rotate").toString(),
+                EntityEffectCommand.AutoRotateType.class, SingletonArgumentInfo.contextFree(EntityEffectCommand.AutoRotateType::new));
+
         PhotonRegistries.init();
+        PhotonCommonListeners.init();
     }
 }

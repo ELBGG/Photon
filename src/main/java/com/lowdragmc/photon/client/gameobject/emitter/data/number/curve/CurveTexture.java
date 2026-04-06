@@ -4,8 +4,8 @@ import com.lowdragmc.lowdraglib2.gui.ColorPattern;
 import com.lowdragmc.lowdraglib2.gui.texture.TransformTexture;
 import com.lowdragmc.lowdraglib2.gui.util.DrawerHelper;
 import lombok.Setter;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.GuiGraphics;
 import org.joml.Vector2f;
 
@@ -15,6 +15,9 @@ import java.util.ArrayList;
  * @author KilaBash
  * @date 2023/5/30
  * @implNote CurveTexture
+ * @port ELB_GG 
+ * @date_port 2026/03/29 
+ * @port_to fabric
  */
 public class CurveTexture extends TransformTexture {
     private final ECBCurves curves;
@@ -35,7 +38,7 @@ public class CurveTexture extends TransformTexture {
     }
 
     @Override
-    @OnlyIn(Dist.CLIENT)
+    @Environment(EnvType.CLIENT)
     protected void drawInternal(GuiGraphics graphics, float mouseX, float mouseY, float x, float y, float width, float height, float partialTicks) {
         var points = new ArrayList<Vector2f>();
         for (int i = 0; i < width; i++) {

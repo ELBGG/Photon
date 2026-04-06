@@ -6,8 +6,8 @@ import com.lowdragmc.lowdraglib2.gui.texture.TransformTexture;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import lombok.Setter;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.GuiGraphics;
 import org.joml.Vector2f;
 
@@ -17,6 +17,9 @@ import java.util.function.Function;
  * @author KilaBash
  * @date 2023/5/30
  * @implNote RandomCurveTexture
+ * @port ELB_GG 
+ * @date_port 2026/03/29 
+ * @port_to fabric
  */
 public class RandomCurveTexture extends TransformTexture {
     private final ECBCurves curves0, curves1;
@@ -38,7 +41,7 @@ public class RandomCurveTexture extends TransformTexture {
     }
 
     @Override
-    @OnlyIn(Dist.CLIENT)
+    @Environment(EnvType.CLIENT)
     protected void drawInternal(GuiGraphics graphics, float mouseX, float mouseY, float x, float y, float width, float height, float partialTicks) {
         // render area
         var buffer = graphics.bufferSource().getBuffer(LDLibRenderTypes.guiOverlay());

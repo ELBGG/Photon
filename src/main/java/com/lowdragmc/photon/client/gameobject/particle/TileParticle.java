@@ -14,8 +14,8 @@ import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import lombok.Getter;
 import lombok.Setter;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.Camera;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.core.BlockPos;
@@ -25,8 +25,6 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.client.model.IQuadTransformer;
-import net.neoforged.neoforge.client.model.data.ModelData;
 import org.joml.*;
 import org.lwjgl.system.MemoryStack;
 
@@ -36,11 +34,7 @@ import java.lang.Math;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
-
-/**
- * Tile particle is the common particle that can be rendered in the game.
- */
-@OnlyIn(Dist.CLIENT)
+@Environment(EnvType.CLIENT)
 @ParametersAreNonnullByDefault
 public class TileParticle implements IParticle {
     public static final Direction[] MODEL_SIDES = new Direction[]{Direction.NORTH, Direction.SOUTH, Direction.WEST, Direction.EAST, Direction.UP, Direction.DOWN, null};
@@ -644,7 +638,7 @@ u     */
                     case EAST:
                         yield 0.6F;
                 } : 1f;
-                var quads = model.renderModel(null, null, null, side, randomSource, ModelData.EMPTY, null);
+                var quads = model.renderModel(null, null, null, side, randomSource, null, null);
                 for (var quad : quads) {
                     putBulkData(transform, buffer, quad, brightness, r, g, b, a, light);
                 }
@@ -709,7 +703,7 @@ u     */
                 var z = byteBuffer.getFloat(8) + pivotPoint.z; // 2
                 var u = byteBuffer.getFloat(16); // 4 u
                 var v = byteBuffer.getFloat(20); // 5 v
-                var normalData = byteBuffer.getInt(IQuadTransformer.NORMAL * 4);
+                var normalData = byteBuffer.getInt(7 * 4);
                 float nX = ((byte) normalData      ) / 127.0f;
                 float nY = ((byte)(normalData>>8 )) / 127.0f;
                 float nZ = ((byte)(normalData>>16)) / 127.0f;

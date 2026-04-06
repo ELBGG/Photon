@@ -14,6 +14,9 @@ import java.util.function.Supplier;
  * @author KilaBash
  * @date 2023/5/26
  * @implNote Constant
+ * @port ELB_GG 
+ * @date_port 2026/03/29 
+ * @port_to fabric
  */
 @LDLRegisterClient(name = "constant", registry = "photon:number_function")
 public class Constant implements NumberFunction {

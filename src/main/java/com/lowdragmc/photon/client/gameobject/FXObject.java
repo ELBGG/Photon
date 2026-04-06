@@ -14,8 +14,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import net.minecraft.world.phys.AABB;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.Camera;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleRenderType;
@@ -28,7 +28,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-@OnlyIn(Dist.CLIENT)
+@Environment(EnvType.CLIENT)
 @ParametersAreNonnullByDefault
 @Getter
 public class FXObject extends Particle implements IFXObject {
@@ -185,10 +185,10 @@ public class FXObject extends Particle implements IFXObject {
         return NO_RENDER_RENDER_TYPE;
     }
 
-    @Override
     @Nonnull
     public AABB getRenderBoundingBox(float partialTicks) {
-        return AABB.INFINITE;
+        return new AABB(-Double.MAX_VALUE/2, -Double.MAX_VALUE/2, -Double.MAX_VALUE/2,
+                         Double.MAX_VALUE/2,  Double.MAX_VALUE/2,  Double.MAX_VALUE/2);
     }
 
     public static ParticleRenderType NO_RENDER_RENDER_TYPE = new ParticleRenderType() {
@@ -199,9 +199,5 @@ public class FXObject extends Particle implements IFXObject {
             return pipeline;
         }
 
-        @Override
-        public boolean isTranslucent() {
-            return false;
-        }
     };
 }

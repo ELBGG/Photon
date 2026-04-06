@@ -2,11 +2,6 @@ package com.lowdragmc.photon.client.gameobject.particle.aratrail;
 
 import java.lang.reflect.Array;
 import java.util.*;
-
-/**
- * Custom List implementation that allows access to the underlying raw array. This enables several tricks
- * that aren't possible with ArrayList<T>, such as passing a reference to the contents of an entry to a function.
- */
 public class ElasticArray<T> implements List<T> {
     private final Class<T> clazz;
     private T[] data;

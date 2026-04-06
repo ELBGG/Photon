@@ -1,10 +1,11 @@
 package com.lowdragmc.photon.client.gameobject.emitter.data;
 
+import com.lowdragmc.lowdraglib2.client.utils.GLUtil;
 import com.lowdragmc.lowdraglib2.configurator.ui.Configurator;
 import com.lowdragmc.lowdraglib2.configurator.ui.ConfiguratorGroup;
 import com.lowdragmc.photon.client.gameobject.particle.IParticle;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 
 import java.nio.FloatBuffer;
 import java.util.Collection;
@@ -12,9 +13,7 @@ import java.util.Collection;
 import static org.lwjgl.opengl.GL11.GL_FLOAT;
 import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
 import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
-import static org.lwjgl.opengl.GL33.glVertexAttribDivisor;
-
-@OnlyIn(Dist.CLIENT)
+@Environment(EnvType.CLIENT)
 public abstract class AdditionalGPUDataSetting extends ToggleGroup {
 
     public interface DataProvider {
@@ -37,7 +36,7 @@ public abstract class AdditionalGPUDataSetting extends ToggleGroup {
             var size =  dataProvider.getSize();
             glVertexAttribPointer(attribIndex, size, GL_FLOAT, false, stride, offset);
             glEnableVertexAttribArray(attribIndex);
-            glVertexAttribDivisor(attribIndex, 1);
+            GLUtil.vertexAttribDivisor(attribIndex, 1);
             offset += size * Float.BYTES;
             attribIndex++;
         }

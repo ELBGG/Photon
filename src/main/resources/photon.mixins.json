@@ -6,11 +6,13 @@
   "plugin": "com.lowdragmc.photon.core.mixins.PhotonMixinPlugin",
   "client": [
     "MinecraftMixin",
+    "LevelRendererMixin",
     "ParticleEngineMixin",
     "accessor.ParticleEngineAccessor",
     "iris.ExtendedShaderAccessor"
   ],
   "mixins": [
+    "accessor.ArgumentTypeInfosAccessor"
   ],
   "injectors": {
     "defaultRequire": 1
