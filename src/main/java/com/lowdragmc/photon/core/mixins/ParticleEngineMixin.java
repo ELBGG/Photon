@@ -3,6 +3,7 @@ package com.lowdragmc.photon.core.mixins;
 import com.lowdragmc.photon.client.fx.BlockEffectExecutor;
 import com.lowdragmc.photon.client.fx.EntityEffectExecutor;
 import com.lowdragmc.photon.client.gameobject.emitter.renderpipeline.RenderPassPipeline;
+import com.lowdragmc.photon.client.postprocessing.PostProcessing;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.ParticleEngine;
 import org.spongepowered.asm.mixin.Mixin;
@@ -31,6 +32,7 @@ public abstract class ParticleEngineMixin {
         EntityEffectExecutor.CACHE.clear();
         BlockEffectExecutor.CACHE.clear();
         RenderPassPipeline.clearDeferredRender();
+        PostProcessing.reloadAll();
     }
 }
 

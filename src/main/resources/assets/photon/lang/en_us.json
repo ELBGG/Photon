@@ -179,6 +179,10 @@
   "photon.emitter.beam.config.raycast.fluid": "Affect how the raycast interacts with fluids.",
   "photon.emitter.beam.config.color": "Controls the color during its lifetime.",
   "photon.export_fx": "Export FX",
+  "photon.export_tachyon_fx": "Export Tachyon Bundle (.fx + Assets)",
+  "photon.export_tachyon_fx.title": "Choose name for the .fx — bundle folder is created alongside",
+  "photon.export_tachyon_fxproj": "Export Tachyon Bundle (.fxproj + Assets)",
+  "photon.export_tachyon_fxproj.title": "Choose name for the .fxproj — bundle folder is created alongside",
   "photon.gui.editor.fx_info.restart": "Restart",
   "photon.gui.editor.fx_info.play": "Play",
   "photon.gui.editor.fx_info.pause": "Pause",
@@ -441,5 +445,78 @@
   "PhysicsSetting.collidedFriction": "Collided Friction",
   "photon.emitter.config.physics.collidedFriction": "Friction applied when particles is collided",
   "SamplerCurve": "Sampler Curve",
-  "SamplerGradient": "Sampler Gradient"
+  "SamplerGradient": "Sampler Gradient",
+  "light_fx": "Light",
+
+  "LightConfig.type": "Type",
+  "photon.light.config.type": "Shape of the light source: Point (omnidirectional sphere), Spot (cone), Beam (cylinder), Area (rectangle panel).",
+
+  "LightConfig.duration": "Duration",
+  "photon.light.config.duration": "Lifetime of the light in ticks.",
+
+  "LightConfig.looping": "Looping",
+  "photon.light.config.looping": "Whether the light repeats after its duration expires.",
+
+  "LightConfig.color": "Color",
+  "photon.light.config.color": "Light color as ARGB. The alpha channel sets the base brightness (255 = full).",
+
+  "LightConfig.flicker": "Flicker",
+  "photon.light.config.flicker": "Random per-tick brightness variation. 0 = steady, 1 = maximum flicker (like fire).",
+
+  "LightConfig.fadeIn": "Fade In",
+  "photon.light.config.fadeIn": "Fraction of the lifetime spent fading in. 0 = instant on, 0.2 = brightens over the first 20%.",
+
+  "LightConfig.fadeOut": "Fade Out",
+  "photon.light.config.fadeOut": "Fraction of the lifetime spent fading out. 0 = instant off, 0.3 = dims over the last 30%.",
+
+  "LightConfig.intensity": "Intensity",
+  "photon.light.config.intensity": "Overall brightness multiplier (0–4). Supports Curve to animate brightness over lifetime.",
+
+  "LightConfig.falloffExponent": "Falloff",
+  "photon.light.config.falloffExponent": "Shape of the attenuation curve from centre to edge. 1.0 = linear, 2.0 = quadratic (Blender default, realistic), 3.0 = cubic (soft/filmic). Higher values concentrate brightness near the source.",
+
+  "LightConfig.radius": "Radius",
+  "photon.light.config.radius": "Maximum reach of the point light in blocks. Brightness reaches zero at this distance.",
+
+  "LightConfig.range": "Range",
+  "photon.light.config.range": "Maximum forward range of spot / area light in blocks.",
+
+  "LightConfig.innerAngle": "Inner Angle",
+  "photon.light.config.innerAngle": "Inner (full-intensity) cone half-angle in degrees. Pixels within this angle receive full brightness.",
+
+  "LightConfig.outerAngle": "Outer Angle",
+  "photon.light.config.outerAngle": "Outer (penumbra) cone half-angle in degrees. Brightness falls off smoothly from inner to outer angle.",
+
+  "LightConfig.beamLength": "Beam Length",
+  "photon.light.config.beamLength": "Length of the beam cylinder along its forward axis in blocks.",
+
+  "LightConfig.beamRadius": "Beam Radius",
+  "photon.light.config.beamRadius": "Radius of the beam cylinder in blocks.",
+
+  "LightConfig.areaWidth": "Width",
+  "photon.light.config.areaWidth": "Width of the rectangular area light panel in blocks.",
+
+  "LightConfig.areaHeight": "Height",
+  "photon.light.config.areaHeight": "Height of the rectangular area light panel in blocks.",
+
+  "BeamConfig.endWidth": "End Width",
+  "photon.emitter.beam.config.endWidth": "Width of the beam at its tip. Set different from Width to create a tapered beam.",
+
+  "BeamConfig.fadeIn": "Fade In",
+  "photon.emitter.beam.config.fadeIn": "Fraction of the duration spent fading in. 0 = instant on, 0.2 = ramps up over the first 20% of lifetime.",
+
+  "BeamConfig.fadeOut": "Fade Out",
+  "photon.emitter.beam.config.fadeOut": "Fraction of the duration spent fading out. 0 = instant off, 0.3 = dims over the last 30% of lifetime.",
+
+  "BeamConfig.intensity": "Intensity",
+  "photon.emitter.beam.config.intensity": "Overall brightness/opacity multiplier (0–4). Supports Curve to animate intensity independently over the beam lifetime.",
+
+  "BeamConfig.segments": "Segments",
+  "photon.emitter.beam.config.segments": "Number of geometry subdivisions along the beam. 1 = single flat quad. Higher values allow smooth noise/wave deformation.",
+
+  "BeamConfig.noiseAmplitude": "Noise Amplitude",
+  "photon.emitter.beam.config.noiseAmplitude": "World-space displacement of intermediate segment points perpendicular to the beam. 0 = straight beam.",
+
+  "BeamConfig.noiseFrequency": "Noise Frequency",
+  "photon.emitter.beam.config.noiseFrequency": "Animation speed of the noise oscillation in cycles per second. Higher = faster wavering."
 }

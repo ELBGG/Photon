@@ -103,14 +103,13 @@ public class BeamEmitter extends Emitter {
 
     @Override
     protected void update() {
+        super.update();  // age++, t updated — must run first so updateColor() sees current t
         if (beamParticle.isAlive()) {
             beamParticle.updateTick();
             if(beamParticle.getDelay() > 0) age = 0;
         } else {
             remove();
         }
-
-        super.update();
     }
 
     @Override

@@ -1,0 +1,13 @@
+{
+  "targets": [],
+  "passes": [
+    {
+      "name": "photon:dot_screen",
+      "intarget": "photon:input",
+      "outtarget": "photon:output",
+      "auxtargets": [
+        { "id": "minecraft:main", "name": "Background" }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "targets": [],
+  "passes": [
+    {
+      "name": "photon:warp",
+      "intarget": "minecraft:main",
+      "outtarget": "photon:output",
+      "auxtargets": [
+        { "id": "photon:input", "name": "WarpImage" }
+      ]
+    }
+  ]
+}

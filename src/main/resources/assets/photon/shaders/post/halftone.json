@@ -1,0 +1,13 @@
+{
+  "targets": [],
+  "passes": [
+    {
+      "name": "photon:halftone",
+      "intarget": "photon:input",
+      "outtarget": "photon:output",
+      "auxtargets": [
+        { "id": "minecraft:main", "name": "Background" }
+      ]
+    }
+  ]
+}

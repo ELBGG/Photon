@@ -68,13 +68,57 @@ public class BeamConfig implements IConfigurable, IPersistedSerializable {
     @Setter
     @Getter
     @Configurable(name = "BeamConfig.width", tips = "photon.emitter.beam.config.width")
-    @NumberFunctionConfig(types = {Constant.class, RandomConstant.class, Curve.class, RandomCurve.class}, min = 0, curveConfig = @CurveConfig(bound = {0, 1}, xAxis = "duration", yAxis = "width"))
+    @NumberFunctionConfig(types = {Constant.class, RandomConstant.class, Curve.class, RandomCurve.class},
+            min = 0, curveConfig = @CurveConfig(bound = {0, 2}, xAxis = "duration", yAxis = "width"))
     protected NumberFunction width = NumberFunction.constant(0.2);
+
+    @Setter
+    @Getter
+    @Configurable(name = "BeamConfig.endWidth", tips = "photon.emitter.beam.config.endWidth")
+    @NumberFunctionConfig(types = {Constant.class, RandomConstant.class, Curve.class, RandomCurve.class},
+            min = 0, curveConfig = @CurveConfig(bound = {0, 2}, xAxis = "duration", yAxis = "endWidth"))
+    protected NumberFunction endWidth = NumberFunction.constant(0.2);
+
+    @Setter @Getter
+    @Configurable(name = "BeamConfig.fadeIn", tips = "photon.emitter.beam.config.fadeIn")
+    @ConfigNumber(range = {0, 1})
+    protected float fadeIn = 0f;
+
+    @Setter @Getter
+    @Configurable(name = "BeamConfig.fadeOut", tips = "photon.emitter.beam.config.fadeOut")
+    @ConfigNumber(range = {0, 1})
+    protected float fadeOut = 0f;
+
+    @Setter
+    @Getter
+    @Configurable(name = "BeamConfig.intensity", tips = "photon.emitter.beam.config.intensity")
+    @NumberFunctionConfig(types = {Constant.class, RandomConstant.class, Curve.class, RandomCurve.class},
+            min = 0, max = 4, defaultValue = 1,
+            curveConfig = @CurveConfig(bound = {0, 4}, xAxis = "duration", yAxis = "intensity"))
+    protected NumberFunction intensity = NumberFunction.constant(1);
+
+    @Setter @Getter
+    @Configurable(name = "BeamConfig.segments", tips = "photon.emitter.beam.config.segments")
+    @ConfigNumber(range = {1, 32})
+    protected int segments = 1;
+
+    @Setter @Getter
+    @Configurable(name = "BeamConfig.noiseAmplitude", tips = "photon.emitter.beam.config.noiseAmplitude")
+    @ConfigNumber(range = {0, 5})
+    protected float noiseAmplitude = 0f;
+
+    @Setter @Getter
+    @Configurable(name = "BeamConfig.noiseFrequency", tips = "photon.emitter.beam.config.noiseFrequency")
+    @ConfigNumber(range = {0, 10})
+    protected float noiseFrequency = 1f;
+
     @Setter
     @Getter
     @Configurable(name = "BeamConfig.emitRate", tips = "photon.emitter.beam.config.emitRate")
-    @NumberFunctionConfig(types = {Constant.class, RandomConstant.class, Curve.class, RandomCurve.class}, curveConfig = @CurveConfig(bound = {0, 1}, xAxis = "duration", yAxis = "width"))
+    @NumberFunctionConfig(types = {Constant.class, RandomConstant.class, Curve.class, RandomCurve.class},
+            curveConfig = @CurveConfig(bound = {0, 1}, xAxis = "duration", yAxis = "emitRate"))
     protected NumberFunction emitRate = NumberFunction.constant(0);
+
     @Setter
     @Getter
     @Configurable(name = "BeamConfig.raycast", tips = "photon.emitter.beam.config.raycast")
@@ -109,7 +153,6 @@ public class BeamConfig implements IConfigurable, IPersistedSerializable {
         BLOCKS_AND_ENTITIES;
     }
 
-    // runtime
     public final PhotonFXRenderPass particleRenderType = new RenderPass();
 
     public BeamConfig() {
@@ -137,7 +180,6 @@ public class BeamConfig implements IConfigurable, IPersistedSerializable {
         public RenderPass() {
             super(renderer, VertexFormat.Mode.QUADS, DefaultVertexFormat.BLOCK);
         }
-
 
         @Override
         public boolean equals(@Nonnull Object o) {

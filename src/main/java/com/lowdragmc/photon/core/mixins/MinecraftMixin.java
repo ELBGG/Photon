@@ -1,6 +1,7 @@
 package com.lowdragmc.photon.core.mixins;
 
 import com.lowdragmc.photon.client.gameobject.emitter.renderpipeline.RenderPassPipeline;
+import com.lowdragmc.photon.client.postprocessing.PostProcessing;
 import net.minecraft.client.Minecraft;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -16,5 +17,7 @@ public class MinecraftMixin {
             at = @At(value = "RETURN"))
     private void photon$resizeDisplay(CallbackInfo ci) {
         RenderPassPipeline.markDrawTargetDirty();
+        var mc = (Minecraft) (Object) this;
+        PostProcessing.resizeAll(mc.getWindow().getWidth(), mc.getWindow().getHeight());
     }
 }

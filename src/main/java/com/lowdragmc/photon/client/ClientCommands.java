@@ -1,5 +1,6 @@
 package com.lowdragmc.photon.client;
 
+import com.lowdragmc.photon.client.postprocessing.PostProcessing;
 import com.lowdragmc.lowdraglib2.LDLib2;
 import com.lowdragmc.lowdraglib2.Platform;
 import com.lowdragmc.lowdraglib2.editor.ui.EditorWindow;
@@ -74,6 +75,58 @@ public class ClientCommands {
                                     }
                                     return 1;
                                 }))
+                        .then(createLiteral("post_test")
+                                .executes(context -> {
+                                    PhotonClientListeners.postTestActive = !PhotonClientListeners.postTestActive;
+                                    var state = PhotonClientListeners.postTestActive ? "ON" : "OFF";
+                                    if (Minecraft.getInstance().player != null) {
+                                        Minecraft.getInstance().player.sendSystemMessage(
+                                                Component.literal("PostProcessing test [" + PhotonClientListeners.postTestEffect.name + "]: " + state));
+                                    }
+                                    return 1;
+                                })
+                                .then(createLiteral("bloom_unreal").executes(ctx -> {
+                                    PhotonClientListeners.postTestEffect = PostProcessing.BLOOM_UNREAL;
+                                    PhotonClientListeners.postTestActive = true;
+                                    ctx.getSource().getPlayer().sendSystemMessage(Component.literal("Testing: bloom_unreal"));
+                                    return 1;
+                                }))
+                                .then(createLiteral("bloom_unity").executes(ctx -> {
+                                    PhotonClientListeners.postTestEffect = PostProcessing.BLOOM_UNITY;
+                                    PhotonClientListeners.postTestActive = true;
+                                    ctx.getSource().getPlayer().sendSystemMessage(Component.literal("Testing: bloom_unity"));
+                                    return 1;
+                                }))
+                                .then(createLiteral("warp").executes(ctx -> {
+                                    PhotonClientListeners.postTestEffect = PostProcessing.WARP;
+                                    PhotonClientListeners.postTestActive = true;
+                                    ctx.getSource().getPlayer().sendSystemMessage(Component.literal("Testing: warp"));
+                                    return 1;
+                                }))
+                                .then(createLiteral("vhs").executes(ctx -> {
+                                    PhotonClientListeners.postTestEffect = PostProcessing.VHS;
+                                    PhotonClientListeners.postTestActive = true;
+                                    ctx.getSource().getPlayer().sendSystemMessage(Component.literal("Testing: vhs"));
+                                    return 1;
+                                }))
+                                .then(createLiteral("flicker").executes(ctx -> {
+                                    PhotonClientListeners.postTestEffect = PostProcessing.FLICKER;
+                                    PhotonClientListeners.postTestActive = true;
+                                    ctx.getSource().getPlayer().sendSystemMessage(Component.literal("Testing: flicker"));
+                                    return 1;
+                                }))
+                                .then(createLiteral("halftone").executes(ctx -> {
+                                    PhotonClientListeners.postTestEffect = PostProcessing.HALFTONE;
+                                    PhotonClientListeners.postTestActive = true;
+                                    ctx.getSource().getPlayer().sendSystemMessage(Component.literal("Testing: halftone"));
+                                    return 1;
+                                }))
+                                .then(createLiteral("dot_screen").executes(ctx -> {
+                                    PhotonClientListeners.postTestEffect = PostProcessing.DOT_SCREEN;
+                                    PhotonClientListeners.postTestActive = true;
+                                    ctx.getSource().getPlayer().sendSystemMessage(Component.literal("Testing: dot_screen"));
+                                    return 1;
+                                })))
                         .then(createLiteral("convert")
                                 .executes(context -> {
                                     if (Minecraft.getInstance().player != null) {
